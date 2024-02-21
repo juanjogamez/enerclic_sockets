@@ -1,7 +1,9 @@
 # Automated Client-Server System (enerclic-sockets)
 
 ## Overview
-This repository aims to implement automation for establishing a client-server-client system. Both clients can exchange messages with each other through the server. The server and client are implemented in Python in the files `server.py` and `client.py`, respectively. For ease of use, Dockerization has been opted for. Given the illustrative purposes of this repository, two Dockerfiles (`/docker/df_client` and `/docker/df_server`) have been established. Both, starting from an Alpine image, will generate an image with the required Python file (server or client) and with Python3 installed for subsequent execution. These Dockerfiles are included in `docker-compose.yml` (build section of each service (container)). Additionally, in the same `docker-compose.yml`, the necessary Docker Network configuration is established as well as the necessary volumes and entry commands.
+This repository aims to implement automation for establishing a client-server-client system. Both clients can exchange messages with each other through the server. The server and client are implemented in Python in the files `server.py` and `client.py`*, respectively. For ease of use, Dockerization has been opted for. Given the illustrative purposes of this repository, two Dockerfiles (`/docker/df_client` and `/docker/df_server`) have been established. Both, starting from an Alpine image, will generate an image with the required Python file (server or client) and with Python3 installed for subsequent execution. These Dockerfiles are included in `docker-compose.yml` (build section of each service (container)). Additionally, in the same `docker-compose.yml`, the necessary Docker Network configuration is established as well as the necessary volumes and entry commands.
+
+*client.py includes a feature by which connection can be closed easily. It is only needed to send 'exit' as a message.
 
 ## Requirements
 - Docker
