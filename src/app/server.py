@@ -8,7 +8,6 @@ import threading
 import datetime
 
 clients_list = []    # Global tuple-list variable to keep track of established sockets
-logs = []
 
 
 def handle_client(client_socket, client_address):
@@ -23,6 +22,7 @@ def handle_client(client_socket, client_address):
         if not data:
             break
         message = data.decode('utf-8')
+        # Saving message in logs file
         with open("/logs/messages.log", "a") as log_file:
             log_file.write(f"Received message from {client_address}: {message} at {datetime.datetime.utcnow()}\n")
         message = "from " + str(client_address) + ':' + message
