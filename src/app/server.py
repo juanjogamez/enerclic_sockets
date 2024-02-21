@@ -12,8 +12,8 @@ clients_list = []    # Global tuple-list variable to keep track of established s
 
 def handle_client(client_socket, client_address):
     """ This function handles a client connection to the server (considering threading)
-    :param client_address:
-    :param client_socket:
+    :param client_address: client IP Address
+    :param client_socket: cliente socket object
     :return: void
     """
     while True:
@@ -22,14 +22,26 @@ def handle_client(client_socket, client_address):
         if not data:
             break
         message = data.decode('utf-8')
+
+        # If the client closes connection 'friendly'
+        if message == "exit":
+            message_ts = "Client closing connection"  # message to send
+        else:
+            message_ts = message
+
         # Saving message in logs file
         with open("/logs/messages.log", "a") as log_file:
-            log_file.write(f"Received message from {client_address}: {message} at {datetime.datetime.utcnow()}\n")
-        message = "from " + str(client_address) + ':' + message
+            log_file.write(f"Received message from {client_address}: '{message_ts}' at {datetime.datetime.utcnow()}\n")
+        message_ts = "from " + str(client_address) + ':' + message_ts  # message to send
+
         for conn in clients_list:
             if conn[1] != client_address:
                 # Sending data to the opposite client (since we consider only 2 for current scenario)
-                conn[0].sendall(message.encode('utf-8'))
+                conn[0].sendall(message_ts.encode('utf-8'))
+
+        # Closing connection if 'exit' message is received
+        if message == "exit":
+            break
     client_socket.close()
     clients_list.remove((client_socket, client_address))  # Removing client tuple from local variable
 

@@ -10,7 +10,7 @@ import threading
 def receiving_handler(client_socket):
     """
     This function takes care of the reception of messages while client execution
-    :param client_socket: socker which data will be received from
+    :param client_socket: socket which data will be received from
     :return: void
     """
     while True:
@@ -36,6 +36,8 @@ def main():
     while True:
         message = input("Enter your message: ")
         client_socket.sendall(message.encode('utf-8'))  # Sending complete encoded message
+        if message == "exit":
+            break
 
 
 if __name__ == "__main__":
