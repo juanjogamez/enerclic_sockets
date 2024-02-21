@@ -26,7 +26,7 @@ def receiving_handler(client_socket):
 def main():
     # Socket object instance: (AF_INET -> IPv4, SOCK_STREAM -> TCP Socket)
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = '127.0.0.1'  # Server IP
+    host = '172.18.0.10'  # Server IP
     port = 33333        # Server Port
     client_socket.connect((host, port))  # Establishing connection
     rec_handler = threading.Thread(target=receiving_handler, args=(client_socket,))  # Establishing thread

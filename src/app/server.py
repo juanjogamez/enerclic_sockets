@@ -8,6 +8,7 @@ import threading
 import datetime
 
 clients_list = []    # Global tuple-list variable to keep track of established sockets
+logs = []
 
 
 def handle_client(client_socket, client_address):
@@ -22,21 +23,22 @@ def handle_client(client_socket, client_address):
         if not data:
             break
         message = data.decode('utf-8')
-        print(f"Received message from {client_address}: {message}" )
+        with open("/logs/messages.log", "a") as log_file:
+            log_file.write(f"Received message from {client_address}: {message} at {datetime.datetime.utcnow()}\n")
         message = "from " + str(client_address) + ':' + message
         for conn in clients_list:
             if conn[1] != client_address:
                 # Sending data to the opposite client (since we consider only 2 for current scenario)
                 conn[0].sendall(message.encode('utf-8'))
     client_socket.close()
-    clients_list.remove((client_socket,client_address))  # Removing client tuple from local variable
+    clients_list.remove((client_socket, client_address))  # Removing client tuple from local variable
 
 
 def main():
     # Socket object instance: (AF_INET -> IPv4, SOCK_STREAM -> TCP Socket)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = '127.0.0.1'  # Server IP
-    port = 12345        # Server Port
+    host = '172.18.0.10'  # Server IP
+    port = 33333        # Server Port
     server_socket.bind((host, port))  # Linking socket to host, port
     server_socket.listen(3)     # 3 indicates the maximum number of connections on wait
     print(f"Server listening on {host}:{port}")

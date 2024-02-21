@@ -1,0 +1,45 @@
+# Coded by juanjogamez
+version: '3'
+
+services:
+  # Server container configuration
+  server_container:
+    build:
+      context: .
+      dockerfile: ./docker/df_server
+    command: ["sh", "-c", "python3 /app/server.py > /logs/server.log"]
+    networks:
+      enerclic_network:
+        ipv4_address: 172.18.0.10
+    ports:
+      - "33333:33333"  # Map host port 33333 to container port 33333
+    volumes:
+      - /home/juanjogamez/enerclic_sockets/logs/server:/logs  # Mount host directory to container directory
+  
+  # Client 1 container configuration
+  client1_container:
+    build:
+      context: .
+      dockerfile: ./docker/df_client
+    command: sh
+    tty: true
+    networks:
+      - enerclic_network  # Connect to the same network as the server
+  
+  # Client 2 container configuration
+  client2_container:
+    build:
+      context: .
+      dockerfile: ./docker/df_client
+    command: sh
+    tty: true
+    networks:
+      - enerclic_network  # Connect to the same network as the server
+
+# Define custom network with specified subnet
+networks:
+  enerclic_network:
+    #IP Address Management
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24  # Define subnet for the network

@@ -1,0 +1,8 @@
+FROM alpine
+
+# Copying needed script
+COPY ../src/app/server.py /app/
+
+# Updating repositories and adding Python3
+RUN apk update && \
+    apk add python3
